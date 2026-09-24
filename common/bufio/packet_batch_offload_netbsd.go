@@ -2,7 +2,7 @@ package bufio
 
 import "syscall"
 
-type syscallPacketBatchOffload struct{}
+type syscallPacketBatchOffload struct{ disabled bool }
 
 func (o *syscallPacketBatchOffload) reset() {}
 

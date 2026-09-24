@@ -178,7 +178,7 @@ func createSyscallPacketBatchWriter(writer any) (N.PacketBatchWriter, bool) {
 	if _, isConnected := syscallPacketBatchPeerDestination(rawConn); isConnected {
 		return nil, false
 	}
-	w := &syscallPacketBatchWriter{upstream: writer, rawConn: rawConn}
+	w := &syscallPacketBatchWriter{upstream: writer, rawConn: rawConn, offload: syscallPacketBatchOffload{disabled: N.IsGSODisabled(writer)}}
 	w.writeFunc = w.write
 	return w, true
 }
@@ -191,7 +191,7 @@ func createSyscallConnectedPacketBatchWriter(writer any) (N.ConnectedPacketBatch
 	if _, isConnected := syscallPacketBatchPeerDestination(rawConn); !isConnected {
 		return nil, false
 	}
-	w := &syscallPacketBatchWriter{upstream: writer, rawConn: rawConn}
+	w := &syscallPacketBatchWriter{upstream: writer, rawConn: rawConn, offload: syscallPacketBatchOffload{disabled: N.IsGSODisabled(writer)}}
 	w.writeFunc = w.write
 	return w, true
 }
